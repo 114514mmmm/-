@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实人认证</title>
+    <!-- 引入Bootstrap CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        .title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 2rem;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">实人认证</div>
+        <form id="form" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="name" class="form-label">姓名：</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="idCard" class="form-label">身份证号：</label>
+                <input type="text" class="form-control" id="idCard" name="idCard" required>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">上传照片：</label>
+                <input type="file" class="form-control" id="image" name="file" accept="image/*" required>
+            </div>
+            <button type="button" class="btn btn-custom" onclick="submitForm()">提交</button>
+        </form>
+    </div>
+
+    <!-- 引入Bootstrap JS -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function submitForm() {
+            var form = document.getElementById('form');
+            var formData = new FormData(form);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://rkw.chinapopin.com/rkw-gateway/lawyer/law_appoint/id_card_check', true);
+            xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Linux; Android 14; PKD130 Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.103 Mobile Safari/537.36 XWEB/1300333 MMWEBSDK/20241202 MMWEBID/6440 MicroMessenger/8.0.56.2800(0x2800385B) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64');
+            xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
+            xhr.setRequestHeader('Accept-Encoding', 'gzip, deflate, br, zstd');
+            xhr.setRequestHeader('sec-ch-ua-platform', '"Android"');
+            xhr.setRequestHeader('sec-ch-ua', '"Chromium";v="130", "Android WebView";v="130", "Not?A_Brand";v="99"');
+            xhr.setRequestHeader('sec-ch-ua-mobile', '?1');
+            xhr.setRequestHeader('Origin', 'https://rkw.chinapopin.com');
+            xhr.setRequestHeader('X-Requested-With', 'com.tencent.mm');
+            xhr.setRequestHeader('Sec-Fetch-Site', 'same-origin');
+            xhr.setRequestHeader('Sec-Fetch-Mode', 'cors');
+            xhr.setRequestHeader('Sec-Fetch-Dest', 'empty');
+            xhr.setRequestHeader('Referer', 'https://rkw.chinapopin.com/lawyer-wx/info');
+            xhr.setRequestHeader('Accept-Language', 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7');
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.msg === "实人认证不通过") {
+                        alert("核验失败");
+                    } else if (response.msg === "success") {
+                        alert("核验成功");
+                    } else {
+                        alert(xhr.responseText);
+                    }
+                } else {
+                    alert("请求失败，状态码：" + xhr.status);
+                }
+            };
+
+            xhr.onerror = function () {
+                alert("请求发生错误");
+            };
+
+            xhr.send(formData);
+        }
+    </script>
+</body>
+</html>
