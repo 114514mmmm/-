@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>实人认证</title>
+    <title>人脸核验</title>
     <!-- 引入Bootstrap CSS -->
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"  rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -37,9 +37,161 @@
         .btn-custom:hover {
             background-color: #0056b3;
         }
+        .deng-box, .deng-box1, .deng-box2, .deng-box3 {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .deng-box { top: -40px; right: 150px; }
+        .deng-box1 { top: -30px; right: 10px; }
+        .deng-box2 { top: -40px; left: 150px; }
+        .deng-box3 { top: -30px; left: 10px; }
+        .deng {
+            position: relative;
+            width: 120px;
+            height: 90px;
+            margin: 50px;
+            background: rgba(216, 0, 15, .8);
+            border-radius: 50% 50%;
+            transform-origin: 50% -100px;
+            animation: swing 3s infinite ease-in-out;
+            box-shadow: -5px 5px 50px 4px #fa6c00;
+        }
+        .deng-a, .deng-b {
+            background: rgba(216, 0, 15, .1);
+            border: 2px solid #dc8f03;
+            border-radius: 50% 50%;
+        }
+        .deng-a { width: 100px; height: 90px; margin: 12px 8px 8px 8px; }
+        .deng-b { width: 45px; height: 90px; margin: -4px 8px 8px 26px; }
+        .xian {
+            position: absolute;
+            top: -20px;
+            left: 60px;
+            width: 2px;
+            height: 20px;
+            background: #dc8f03;
+        }
+        .shui-a {
+            position: relative;
+            width: 5px;
+            height: 20px;
+            margin: -5px 0 0 59px;
+            animation: swing 4s infinite ease-in-out;
+            transform-origin: 50% -45px;
+            background: orange;
+            border-radius: 0 0 5px 5px;
+        }
+        .shui-b, .shui-c {
+            position: absolute;
+            background: #dc8f03;
+            border-radius: 50%;
+        }
+        .shui-b { top: 14px; left: -2px; width: 10px; height: 10px; }
+        .shui-c { top: 18px; left: -2px; width: 10px; height: 35px; background: orange; border-radius: 0 0 0 5px; }
+        .deng:before, .deng:after {
+            position: absolute;
+            content: " ";
+            display: block;
+            background: linear-gradient(to right, #dc8f03, orange, #dc8f03, orange, #dc8f03);
+            border: solid 1px #dc8f03;
+        }
+        .deng:before { top: -7px; left: 29px; width: 60px; height: 12px; border-radius: 5px 5px 0 0; }
+        .deng:after { bottom: -7px; left: 10px; width: 60px; height: 12px; margin-left: 20px; border-radius: 0 0 5px 5px; }
+        .deng-t {
+            font-family: 黑体, Arial, Lucida Grande, Tahoma, sans-serif;
+            font-size: 3.2rem;
+            color: #dc8f03;
+            font-weight: 700;
+            line-height: 85px;
+            text-align: center;
+        }
+        @keyframes swing {
+            0% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+            100% { transform: rotate(-10deg); }
+        }
     </style>
 </head>
 <body>
+    <!-- 灯笼装饰 -->
+    <div class="deng-box2">
+        <div class="deng">
+            <div class="xian"></div>
+            <div class="deng-a">
+                <div class="deng-b">
+                    <div class="deng-t">年</div>
+                </div>
+            </div>
+            <div class="shui shui-a">
+                <div class="shui-c"></div>
+                <div class="shui-b"></div>
+            </div>
+        </div>
+    </div>
+    <div class="deng-box3">
+        <div class="deng">
+            <div class="xian"></div>
+            <div class="deng-a">
+                <div class="deng-b">
+                    <div class="deng-t">新</div>
+                </div>
+            </div>
+            <div class="shui shui-a">
+                <div class="shui-c"></div>
+                <div class="shui-b"></div>
+            </div>
+        </div>
+    </div>
+    <div class="deng-box1">
+        <div class="deng">
+            <div class="xian"></div>
+            <div class="deng-a">
+                <div class="deng-b">
+                    <div class="deng-t">乐</div>
+                </div>
+            </div>
+            <div class="shui shui-a">
+                <div class="shui-c"></div>
+                <div class="shui-b"></div>
+            </div>
+        </div>
+    </div>
+    <div class="deng-box">
+        <div class="deng">
+            <div class="xian"></div>
+            <div class="deng-a">
+                <div class="deng-b">
+                    <div class="deng-t">快</div>
+                </div>
+            </div>
+            <div class="shui shui-a">
+                <div class="shui-c"></div>
+                <div class="shui-b"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 卡密输入模态框 -->
+    <div class="modal fade" id="keyModal" tabindex="-1" aria-labelledby="keyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="keyModalLabel">输入卡密</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="keyInput" class="form-control" placeholder="请输入卡密" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="verifyKey()">验证</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表单区域 -->
     <div class="container">
         <div class="title">实人认证</div>
         <form id="form" enctype="multipart/form-data">
@@ -55,53 +207,73 @@
                 <label for="image" class="form-label">上传照片：</label>
                 <input type="file" class="form-control" id="image" name="file" accept="image/*" required>
             </div>
-            <button type="button" class="btn btn-custom" onclick="submitForm()">提交</button>
+            <button type="button" class="btn btn-custom" onclick="submitForm()" id="submitBtn" disabled>提交</button>
         </form>
     </div>
 
     <!-- 引入Bootstrap JS -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> 
     <script>
+        // 显示卡密输入模态框
+        document.addEventListener('DOMContentLoaded',  function () {
+            const modal = new bootstrap.Modal(document.getElementById('keyModal')); 
+            modal.show(); 
+        });
+
+        // 验证卡密
+        function verifyKey() {
+            const keyInput = document.getElementById('keyInput').value; 
+            const correctKey = 'QWdub2k2NjY=';
+            if (keyInput === atob(correctKey)) {
+                alert('卡密验证成功');
+                document.getElementById('keyModal').classList.remove('show'); 
+                document.getElementById('submitBtn').disabled  = false;
+            } else {
+                alert('卡密错误');
+            }
+        }
+
+        // 提交表单
         function submitForm() {
-            var form = document.getElementById('form');
+            var form = document.getElementById('form'); 
             var formData = new FormData(form);
 
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://rkw.chinapopin.com/rkw-gateway/lawyer/law_appoint/id_card_check', true);
-            xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Linux; Android 14; PKD130 Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.103 Mobile Safari/537.36 XWEB/1300333 MMWEBSDK/20241202 MMWEBID/6440 MicroMessenger/8.0.56.2800(0x2800385B) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64');
-            xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
-            xhr.setRequestHeader('Accept-Encoding', 'gzip, deflate, br, zstd');
-            xhr.setRequestHeader('sec-ch-ua-platform', '"Android"');
-            xhr.setRequestHeader('sec-ch-ua', '"Chromium";v="130", "Android WebView";v="130", "Not?A_Brand";v="99"');
-            xhr.setRequestHeader('sec-ch-ua-mobile', '?1');
-            xhr.setRequestHeader('Origin', 'https://rkw.chinapopin.com');
-            xhr.setRequestHeader('X-Requested-With', 'com.tencent.mm');
-            xhr.setRequestHeader('Sec-Fetch-Site', 'same-origin');
-            xhr.setRequestHeader('Sec-Fetch-Mode', 'cors');
-            xhr.setRequestHeader('Sec-Fetch-Dest', 'empty');
-            xhr.setRequestHeader('Referer', 'https://rkw.chinapopin.com/lawyer-wx/info');
-            xhr.setRequestHeader('Accept-Language', 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7');
+            xhr.open('POST',  'https://rkw.chinapopin.com/rkw-gateway/lawyer/law_appoint/id_card_check',  true);
+            xhr.setRequestHeader('User-Agent',  'Mozilla/5.0 (Linux; Android 14; PKD130 Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.103 Mobile Safari/537.36 XWEB/1300333 MMWEBSDK/20241202 MMWEBID/6440 MicroMessenger/8.0.56.2800(0x2800385B) WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64');
+            xhr.setRequestHeader('Accept',  'application/json, text/plain, */*');
+            xhr.setRequestHeader('Accept-Encoding',  'gzip, deflate, br, zstd');
+            xhr.setRequestHeader('sec-ch-ua-platform',  '"Android"');
+            xhr.setRequestHeader('sec-ch-ua',  '"Chromium";v="130", "Android WebView";v="130", "Not?A_Brand";v="99"');
+            xhr.setRequestHeader('sec-ch-ua-mobile',  '?1');
+            xhr.setRequestHeader('Origin',  'https://rkw.chinapopin.com'); 
+            xhr.setRequestHeader('X-Requested-With',  'com.tencent.mm'); 
+            xhr.setRequestHeader('Sec-Fetch-Site',  'same-origin');
+            xhr.setRequestHeader('Sec-Fetch-Mode',  'cors');
+            xhr.setRequestHeader('Sec-Fetch-Dest',  'empty');
+            xhr.setRequestHeader('Referer',  'https://rkw.chinapopin.com/lawyer-wx/info'); 
+            xhr.setRequestHeader('Accept-Language',  'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7');
 
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.msg === "实人认证不通过") {
+            xhr.onload  = function () {
+                if (xhr.status  === 200) {
+                    var response = JSON.parse(xhr.responseText); 
+                    if (response.msg  === "实人认证不通过") {
                         alert("核验失败");
-                    } else if (response.msg === "success") {
+                    } else if (response.msg  === "success") {
                         alert("核验成功");
                     } else {
-                        alert(xhr.responseText);
+                        alert(xhr.responseText); 
                     }
                 } else {
-                    alert("请求失败，状态码：" + xhr.status);
+                    alert("请求失败，状态码：" + xhr.status); 
                 }
             };
 
-            xhr.onerror = function () {
+            xhr.onerror  = function () {
                 alert("请求发生错误");
             };
 
-            xhr.send(formData);
+            xhr.send(formData); 
         }
     </script>
 </body>
